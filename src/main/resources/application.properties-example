@@ -1,0 +1,5 @@
+com.techtoha.chatsynchronizer.config.vk.api_endpoint = https://api.vk.com/method
+com.techtoha.chatsynchronizer.config.vk.confirmation_token = CONFIRMATION_TOKEN
+com.techtoha.chatsynchronizer.config.vk.secret = SECRET
+
+com.techtoha.chatsynchronizer.config.telegram.api_endpoint = ENDPOINT_WITH_TOKEN
