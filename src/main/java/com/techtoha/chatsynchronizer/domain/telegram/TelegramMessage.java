@@ -9,7 +9,7 @@ public class TelegramMessage
 {
 
     @JsonProperty("message_id")
-    private Integer messageId;
+    private Long messageId;
 
     private JsonNode from;
 

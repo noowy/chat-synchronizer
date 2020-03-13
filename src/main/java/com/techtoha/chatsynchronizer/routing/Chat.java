@@ -1,5 +1,6 @@
 package com.techtoha.chatsynchronizer.routing;
 
+import com.techtoha.chatsynchronizer.domain.MessengerPlatform;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,7 +22,7 @@ public class Chat
 
     @NotBlank
     @NotNull
-    private String platform;
+    private MessengerPlatform platform;
 
     @NotBlank
     @NotNull

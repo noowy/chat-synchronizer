@@ -12,7 +12,7 @@ public class VkEvent
     private String type;
 
     @JsonProperty("object")
-    private JsonNode object;
+    private VkMessage object;
 
     @JsonProperty("group_id")
     private Long groupId;
