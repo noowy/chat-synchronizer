@@ -1,7 +1,6 @@
 package com.techtoha.chatsynchronizer.domain.telegram;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
 @Data
@@ -12,8 +11,8 @@ public class TelegramUpdate
     private Integer updateId;
 
     @JsonProperty("message")
-    private JsonNode message;
+    private TelegramMessage message;
 
     @JsonProperty("edited_message")
-    private JsonNode editedMessage;
+    private TelegramMessage editedMessage;
 }

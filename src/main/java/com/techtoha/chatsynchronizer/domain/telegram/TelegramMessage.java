@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class TelegramMessage
 {
@@ -15,13 +17,13 @@ public class TelegramMessage
 
     private Integer date;
 
-    private JsonNode chat;
+    private TelegramChat chat;
 
     @JsonProperty("forward_from")
-    private JsonNode forwardFrom;
+    private TelegramUser forwardFrom;
 
     @JsonProperty("forward_from_chat")
-    private JsonNode forwardFromChat;
+    private TelegramChat forwardFromChat;
 
     private String text;
 
@@ -29,5 +31,5 @@ public class TelegramMessage
 
     private JsonNode animation;
 
-    private JsonNode photo;
+    private List<TelegramPhoto> photos;
 }

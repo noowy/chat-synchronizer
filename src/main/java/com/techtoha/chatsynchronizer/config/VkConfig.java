@@ -13,4 +13,6 @@ public class VkConfig
     public String CONFIRMATION_TOKEN;
     public String API_ENDPOINT;
     public String SECRET;
+    public String VK_API_VERSION;
+    public String VK_ACCESS_TOKEN;
 }

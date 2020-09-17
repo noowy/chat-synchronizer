@@ -1,12 +1,13 @@
 package com.techtoha.chatsynchronizer.routing;
 
+import com.techtoha.chatsynchronizer.domain.MessengerPlatform;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ChatRepository extends CrudRepository<Chat, Long>
 {
-    List<Chat> findTargetChatsById(Long id); // change to find chat by natural id and platform
+    Optional<Chat> findChatBySourceIdAndPlatform(String sourceId, MessengerPlatform platform);
 }

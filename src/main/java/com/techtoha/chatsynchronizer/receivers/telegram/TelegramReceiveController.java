@@ -33,9 +33,9 @@ public class TelegramReceiveController
     public String handleNewMessage(@RequestBody TelegramUpdate update)
     {
         if (update.getMessage() != null)
-            log.info(update.getMessage().toPrettyString());
+            log.info(update.getMessage().toString());
         if (update.getEditedMessage() != null)
-            log.info(update.getEditedMessage().toPrettyString());
+            log.info(update.getEditedMessage().toString());
 
         return "ok";
     }

@@ -2,6 +2,7 @@ package com.techtoha.chatsynchronizer.receivers.vk;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.techtoha.chatsynchronizer.config.VkConfig;
+import com.techtoha.chatsynchronizer.domain.Message;
 import com.techtoha.chatsynchronizer.domain.vk.VkEvent;
 import com.techtoha.chatsynchronizer.routing.ChatRouter;
 import com.techtoha.chatsynchronizer.util.MessageConverter;
@@ -41,7 +42,9 @@ public class VkReceiveController
 
         if (event.getType().equals("message_new") || event.getType().equals("message_edit"))
         {
-            router.routeMessage(converter.convert(event.getObject()));
+            Message converted = converter.convert(event.getObject());
+            log.info(converted.toString());
+            router.routeMessage(converted);
         }
 
         return "ok";

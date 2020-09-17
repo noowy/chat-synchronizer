@@ -1,52 +1,49 @@
 package com.techtoha.chatsynchronizer.util;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.techtoha.chatsynchronizer.domain.Message;
 import com.techtoha.chatsynchronizer.domain.MessengerPlatform;
 import com.techtoha.chatsynchronizer.domain.telegram.TelegramMessage;
-import com.techtoha.chatsynchronizer.domain.vk.VkAttachment;
+import com.techtoha.chatsynchronizer.domain.telegram.TelegramPhoto;
 import com.techtoha.chatsynchronizer.domain.vk.VkMessage;
-import com.techtoha.chatsynchronizer.domain.vk.VkPhotoSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.stream.Stream;
 
 @Service
 public class MessageConverter
 {
 
-    private VkLookupService vkService;
+    private VkApi vkService;
+    private TelegramApi telegramService;
 
     // TODO: really think about how to handle plain pictures
     @Autowired
-    public MessageConverter(VkLookupService vkService)
+    public MessageConverter(VkApi vkService, TelegramApi telegramService)
     {
         this.vkService = vkService;
-
+        this.telegramService = telegramService;
     }
 
     public Message convert(TelegramMessage message)
     {
         Message converted = new Message();
 
-        // TODO: CHECK ALL THE REFERENCES OF JSON NODES
-        converted.setId(message.getMessageId());
+        Long messageId = message.getMessageId();
+        Long chatId = message.getChat().getId();
+        String text = message.getText();
+
+        ArrayList<String > photoUrls = new ArrayList<>();
+        message.getPhotos()
+            .forEach(x -> { photoUrls.add(this.telegramService.downloadImage(x.getId())); });
+
+        // TODO: add forwarding sources
+
+        converted.setId(messageId);
         converted.setPlatform(MessengerPlatform.TELEGRAM);
-        converted.setChatId(message.getChat().get("chat_id").asLong());
-        converted.setText(message.getText());
-
-        if (!message.getForwardFrom().isNull())
-            converted.setForwardSource(message.getForwardFrom().get("name").asText());
-        if (!message.getForwardFromChat().isNull())
-            converted.setForwardSource("Chat " + message.getForwardFromChat().get("name").asText());
-        if (!message.getPhoto().isNull())
-        {
-
-        }
-
+        converted.setChatId(chatId);
+        converted.setText(text);
+        converted.setPhotoUrls(photoUrls);
 
         return converted;
     }
@@ -55,9 +52,9 @@ public class MessageConverter
     {
         Message converted = new Message();
 
-        converted.setId(message.getId());
-        converted.setChatId(message.getPeerId());
-        converted.setPlatform(MessengerPlatform.VK);
+        Long messageId = message.getId();
+        Long chatId = message.getPeerId();
+        String text = message.getText();
 
         ArrayList<String> photoUrls = new ArrayList<>();
         message.getAttachments().stream()
@@ -69,9 +66,12 @@ public class MessageConverter
                 .filter(x -> x.getType().equals("wall"))
                 .forEach(x -> postUrls.add(x.getPost().getPostURL()));
 
+        converted.setId(messageId);
+        converted.setChatId(chatId);
+        converted.setPlatform(MessengerPlatform.VK);
         converted.setPhotoUrls(photoUrls);
         converted.setPostUrls(postUrls);
-        converted.setText(message.getText());
+        converted.setText(text);
         converted.setFrom(vkService.getUserFullName(message.getFromId()));
         // TODO: add forwarding sources
 
